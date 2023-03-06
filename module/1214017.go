@@ -3,11 +3,12 @@ package module
 import (
 	"context"
 	"fmt"
+	"os"
+
 	"github.com/gocroot/kampus/model"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	"os"
 )
 
 var MongoString string = os.Getenv("MONGOSTRING")
