@@ -44,3 +44,4 @@ type Keahlian struct {
 	NamaKeahlian string           `bson:"nama_keahlian,omitempty" json:"nama_keahlian,omitempty"`
 	Tingkat    int               `bson:"tingkat,omitempty" json:"tingkat,omitempty"`
 }
+//
