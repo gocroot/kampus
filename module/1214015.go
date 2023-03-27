@@ -1,12 +1,10 @@
-package daffa
+package module
 
 import (
 	"context"
 	"fmt"
 	"os"
-	"time"
 
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -28,49 +26,38 @@ func InsertOneDoc(db string, collection string, doc interface{}) (insertedID int
 	}
 	return insertResult.InsertedID
 }
-
-func InsertUser(nm string, gnr string, eml string, nhp string) (InsertedID interface{}) {
-	var user User
-	user.Nama = nm
-	user.Gender = gnr
-	user.Email = eml
-	user.NoHp = nhp
-
-	return InsertOneDoc("dbuser", "user", user)
+func InsertUser(db string, user User) (insertedID interface{}) {
+	insertResult, err := MongoConnect(db).Collection("user").InsertOne(context.TODO(), user)
+	if err != nil {
+		fmt.Printf("InsertUser: %v\n", err)
+	}
+	return insertResult.InsertedID
 }
-
-func InsertPembayaran(sts string, tbr string) (InsertedID interface{}) {
-	var pembayaran Pembayaran
-	pembayaran.Datetime = primitive.NewDateTimeFromTime(time.Now().UTC())
-	pembayaran.Status = sts
-	pembayaran.TotalBayar = tbr
-
-	return InsertOneDoc("dbpembayaran", "pembayaran", pembayaran)
+func InsertPendaftaran(db string, pendaftaran Pendaftaran) (insertedID interface{}) {
+	insertResult, err := MongoConnect(db).Collection("pendaftaran").InsertOne(context.TODO(), pendaftaran)
+	if err != nil {
+		fmt.Printf("InsertPendaftaran: %v\n", err)
+	}
+	return insertResult.InsertedID
 }
-
-func InsertPendaftaran(nis string, nik string, nsa string) (InsertedID interface{}) {
-	var pendaftaran Pendaftaran
-	pendaftaran.Nis = nis
-	pendaftaran.Nik = nik
-	pendaftaran.NamaSiswa = nsa
-
-	return InsertOneDoc("dbpendaftaran", "pendaftaran", pendaftaran)
+func InsertPembayaran(db string, pembayaran Pembayaran) (insertedID interface{}) {
+	insertResult, err := MongoConnect(db).Collection("pembayaran").InsertOne(context.TODO(), pembayaran)
+	if err != nil {
+		fmt.Printf("InsertPembayaran: %v\n", err)
+	}
+	return insertResult.InsertedID
 }
-
-func InsertPengumuman(hsi string, nli string, pgm string) (InsertedID interface{}) {
-	var pengumuman Pengumuman
-	pengumuman.HasilSeleksi = hsi
-	pengumuman.Nilai = nli
-	pengumuman.Program = pgm
-
-	return InsertOneDoc("dbpengumuman", "pengumuman", pengumuman)
+func InsertPengumuman(db string, pengumuman Pengumuman) (insertedID interface{}) {
+	insertResult, err := MongoConnect(db).Collection("pengumuman").InsertOne(context.TODO(), pengumuman)
+	if err != nil {
+		fmt.Printf("InsertPengumuman: %v\n", err)
+	}
+	return insertResult.InsertedID
 }
-
-func InsertProgramKursus(nks string, jks string, pgr string) (InsertedID interface{}) {
-	var programkursus ProgramKursus
-	programkursus.NamaKursus = nks
-	programkursus.JenjangKursus = jks
-	programkursus.Pengajar = pgr
-
-	return InsertOneDoc("dbprogramkursus", "programkursus", programkursus)
+func InsertKursus(db string, kursus Kursus) (insertedID interface{}) {
+	insertResult, err := MongoConnect(db).Collection("kursus").InsertOne(context.TODO(), kursus)
+	if err != nil {
+		fmt.Printf("InsertKursus: %v\n", err)
+	}
+	return insertResult.InsertedID
 }
