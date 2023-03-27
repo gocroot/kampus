@@ -1,4 +1,4 @@
-package rafi1214005
+package elngbackend
 
 import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -17,4 +17,3 @@ type Matakuliah struct {
 	Lokasi     string             `bson:"lokasi,omitempty" json:"lokasi,omitempty"`
 	Enrol      string             `bson:"enrol,omitempty" json:"enrol,omitempty"`
 }
-
