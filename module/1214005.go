@@ -1,11 +1,11 @@
-package rafi1214005
+package elngbackend
 
 import (
 	"context"
 	"fmt"
 	"os"
 
-
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -44,4 +44,18 @@ func EnrolMatakuliah(mn string, mk string, ml string) (InsertedID interface{}) {
 	matakuliah.Lokasi = ml
 
 	return InsertOneDoc("dbmhs", "matakuliah", matakuliah)
+}
+
+func GetDataMatakuliahFromKode(stats string) (data []Matakuliah) {
+	user := MongoConnect("dbmhs").Collection("matakuliah")
+	filter := bson.M{"kode": stats}
+	cursor, err := user.Find(context.TODO(), filter)
+	if err != nil {
+		fmt.Println("GetDataMatakuliahFromKode :", err)
+	}
+	err = cursor.All(context.TODO(), &data)
+	if err != nil {
+		fmt.Println(err)
+	}
+	return
 }
