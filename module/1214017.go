@@ -3,52 +3,39 @@ package module
 import (
 	"context"
 	"fmt"
-	"os"
 
-	"github.com/gocroot/kampus/model"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-var MongoString string = os.Getenv("MONGOSTRING")
-
-func MongoConnect(dbname string) (db *mongo.Database) {
-	client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI(MongoString))
-	if err != nil {
-		fmt.Printf("MongoConnect: %v\n", err)
-	}
-	return client.Database(dbname)
-}
-
-func InsertOneDoc(db string, collection string, doc interface{}) (insertedID interface{}) {
-	insertResult, err := MongoConnect(db).Collection(collection).InsertOne(context.TODO(), doc)
+func InsertOneDoc(db *mongo.Database, collection string, doc interface{}) (insertedID interface{}) {
+	insertResult, err := db.Collection(collection).InsertOne(context.TODO(), doc)
 	if err != nil {
 		fmt.Printf("InsertOneDoc: %v\n", err)
 	}
 	return insertResult.InsertedID
 }
 
-func InsertDataComp(sistem string, status string, bio model.User) (InsertedID interface{}) {
-	var datacomp model.DataComplain
+func InsertDataComp(db *mongo.Database, sistem string, status string, bio User) (InsertedID interface{}) {
+	var datacomp DataComplain
 	datacomp.Sistemcomp = sistem
 	datacomp.Status = status
 	datacomp.Biodata = bio
-	return InsertOneDoc("HelpdeskData", "data_complain", datacomp)
+	return InsertOneDoc(db, "data_complain", datacomp)
 }
 
-func InsertDataHelper(helper string, username string, nama string, email string, handphone string) (InsertedID interface{}) {
-	help := new(model.Helper)
+func InsertDataHelper(helper string, username string, nama string, email string, handphone string, db *mongo.Database, col string) (InsertedID interface{}) {
+	help := new(Helper)
 	help.Helpid = helper
 	help.Username = username
 	help.Nama = nama
 	help.Email = email
 	help.Handphone = handphone
-	return InsertOneDoc("HelpdeskData", "helperdata", help)
+	return InsertOneDoc(db, col, help)
 }
 
-func GetDataCompFromStatus(status string) (data model.DataComplain) {
-	user := MongoConnect("HelpdeskData").Collection("data_complain")
+func GetDataCompFromStatus(status string, db *mongo.Database, col string) (data DataComplain) {
+	user := db.Collection(col)
 	filter := bson.M{"status": status}
 	err := user.FindOne(context.TODO(), filter).Decode(&data)
 	if err != nil {
@@ -57,18 +44,22 @@ func GetDataCompFromStatus(status string) (data model.DataComplain) {
 	return data
 }
 
-//func GetDataAllbyStats(stats string) (data model.DataComplain) {
-//	user := MongoConnect("HelpdeskData").Collection("data_complain")
-//	filter := bson.M{"status": stats}
-//	err, _ := user.Find(context.TODO(), filter)
-//	if err != nil {
-//		fmt.Println("GetALLData :", err)
-//	}
-//	return data
-//}
+func GetDataAllbyStats(stats string, db *mongo.Database, col string) (data []DataComplain) {
+	user := db.Collection(col)
+	filter := bson.M{"status": stats}
+	cursor, err := user.Find(context.TODO(), filter)
+	if err != nil {
+		fmt.Println("GetALLData :", err)
+	}
+	err = cursor.All(context.TODO(), &data)
+	if err != nil {
+		fmt.Println(err)
+	}
+	return
+}
 
-func GetDataHelperFromPhone(phone string) (data model.Helper) {
-	user := MongoConnect("HelpdeskData").Collection("helperdata")
+func GetDataHelperFromPhone(phone string, db *mongo.Database, col string) (data Helper) {
+	user := db.Collection(col)
 	filter := bson.M{"handphone": phone}
 	err := user.FindOne(context.TODO(), filter).Decode(&data)
 	if err != nil {
@@ -77,8 +68,8 @@ func GetDataHelperFromPhone(phone string) (data model.Helper) {
 	return data
 }
 
-func DeleteDataHelper(phone string) (data model.Helper) {
-	user := MongoConnect("HelpdeskData").Collection("helperdata")
+func DeleteDataHelper(phone string, db *mongo.Database, col string) (data Helper) {
+	user := db.Collection(col)
 	filter := bson.M{"handphone": phone}
 	err, _ := user.DeleteOne(context.TODO(), filter)
 	if err != nil {
@@ -86,4 +77,36 @@ func DeleteDataHelper(phone string) (data model.Helper) {
 	}
 	fmt.Println("Succes Delete data")
 	return data
+}
+
+func GetDataCompFromHandphone(phone string, db *mongo.Database, col string) (data DataComplain) {
+	user := db.Collection(col)
+	filter := bson.M{"user.handphone": phone}
+	err := user.FindOne(context.TODO(), filter).Decode(&data)
+	if err != nil {
+		fmt.Printf("getKaryawanFromNama: %v\n", err)
+	}
+	return data
+}
+
+func GetDataJumlah(tahun string, db *mongo.Database, col string) (data []JumlahComplain) {
+	user := db.Collection(col)
+	filter := bson.M{"tahun": tahun}
+	cursor, err := user.Find(context.TODO(), filter)
+	if err != nil {
+		fmt.Printf("getDataJumlahComplain: %v\n", err)
+	}
+	err = cursor.All(context.TODO(), &data)
+	if err != nil {
+		fmt.Println(err)
+	}
+	return
+}
+
+func InsertJumlahComplain(db *mongo.Database, collect string, bulan string, tahun string, jumlah string) (InsertedID interface{}) {
+	var jumcomp JumlahComplain
+	jumcomp.Tahun = tahun
+	jumcomp.Bulan = bulan
+	jumcomp.Jumlah = jumlah
+	return InsertOneDoc(db, collect, jumcomp)
 }

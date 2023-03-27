@@ -26,3 +26,9 @@ type Helper struct {
 	Email     string             `bson:"email,omitempty" json:"email,omitempty"`
 	Handphone string             `bson:"handphone,omitempty" json:"handphone,omitempty"`
 }
+
+type JumlahComplain struct {
+	Tahun  string `bson:"tahun,omitempty" json:"tahun,omitempty"`
+	Bulan  string `bson:"bulan,omitempty" json:"bulan,omitempty"`
+	Jumlah string `bson:"jumlah,omitempty" json:"jumlah,omitempty"`
+}
