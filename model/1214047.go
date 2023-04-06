@@ -1,4 +1,4 @@
-package model
+package haris
 
 import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -15,7 +15,7 @@ type Surat struct {
 	Isisurat string             `bson:"isisurat" json:"isisurat"`
 	Subject  string             `bson:"subject" json:"subject"`
 }
-type Kategori struct {
+type Kategorisurat struct {
 	ID           primitive.ObjectID `bson:"_id,omitempty" json:"id,omitempty"`
 	NamaKategori string             `bson:"nama_kategori" json:"nama_kategori"`
 	Surat        []Surat            `bson:"surat" json:"surat"`

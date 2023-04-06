@@ -43,7 +43,7 @@ func InsertSurat(db string, surat Surat) (insertedID interface{}) {
 	return insertResult.InsertedID
 }
 
-func InsertKategori(db string, kategori Kategori) (insertedID interface{}) {
+func InsertKategori(db string, kategori Kategorisurat) (insertedID interface{}) {
 	insertResult, err := MongoConnect(db).Collection("kategori").InsertOne(context.TODO(), kategori)
 	if err != nil {
 		fmt.Printf("InsertKategori: %v\n", err)
