@@ -27,7 +27,7 @@ type Team struct {
 	Nama      string             `bson:"nama" json:"nama"`
 	Deskripsi string             `bson:"deskripsi" json:"deskripsi"`
 }
-type About struct {
+type Abouttt struct {
 	ID       primitive.ObjectID `bson:"_id,omitempty" json:"_id,omitempty"`
 	Isi_satu string             `bson:"isi_satu,omitempty" json:"isi_satu,omitempty"`
 	Isi_dua  string             `bson:"isi_dua,omitempty" json:"isi_dua,omitempty"`

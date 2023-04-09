@@ -65,7 +65,7 @@ func InsertTeam(db string, team Team) (insertedID interface{}) {
 	}
 	return insertResult.InsertedID
 }
-func InsertAbout(db string, about About) (insertedID interface{}) {
+func InsertAbout(db string, about Abouttt) (insertedID interface{}) {
 	insertResult, err := MongoConnect(db).Collection("about").InsertOne(context.TODO(), about)
 	if err != nil {
 		fmt.Printf("InsertAbout: %v\n", err)
