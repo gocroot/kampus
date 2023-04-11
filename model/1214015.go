@@ -4,7 +4,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-type User struct {
+type Userdaps struct {
 	ID     primitive.ObjectID `bson:"_id,omitempty" json:"id,omitempty"`
 	Nama   string             `bson:"nama" json:"nama"`
 	Gender string             `bson:"gender" json:"gender"`
