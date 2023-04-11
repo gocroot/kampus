@@ -27,7 +27,7 @@ func InsertOneDoc(db string, collection string, doc interface{}) (insertedID int
 	}
 	return insertResult.InsertedID
 }
-func InsertUser(db string, user User) (insertedID interface{}) {
+func InsertUser(db string, user Userdaps) (insertedID interface{}) {
 	insertResult, err := MongoConnect(db).Collection("user").InsertOne(context.TODO(), user)
 	if err != nil {
 		fmt.Printf("InsertUser: %v\n", err)
@@ -63,7 +63,7 @@ func InsertKursus(db string, kursus Kursus) (insertedID interface{}) {
 	return insertResult.InsertedID
 }
 
-func GetDataUser(stats string) (data []User) {
+func GetDataUser(stats string) (data []Userdaps) {
 	user := MongoConnect("proyek-2").Collection("user")
 	filter := bson.M{"nama": stats}
 	cursor, err := user.Find(context.TODO(), filter)
