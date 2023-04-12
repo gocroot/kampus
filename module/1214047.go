@@ -4,65 +4,41 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/gocroot/kampus/model"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-func InsertUser(db string, user UserSurat) (insertedID interface{}) {
-	insertResult, err := MongoConnect(db).Collection("users").InsertOne(context.TODO(), user)
+func InsertOneDoc(db *mongo.Database, collection string, doc interface{}) (insertedID interface{}) {
+	insertResult, err := db.Collection(collection).InsertOne(context.TODO(), doc)
 	if err != nil {
-		fmt.Printf("InsertUser: %v\n", err)
+		fmt.Printf("InsertOneDoc: %v\n", err)
 	}
 	return insertResult.InsertedID
 }
 
-func InsertSurat(db string, surat Surat) (insertedID interface{}) {
-	insertResult, err := MongoConnect(db).Collection("surat").InsertOne(context.TODO(), surat)
-	if err != nil {
-		fmt.Printf("InsertSurat: %v\n", err)
-	}
-	return insertResult.InsertedID
+func InsertUserData(Nama string, Email string, Telepon string, db *mongo.Database, col string) (InsertedID interface{}) {
+	srt := new(model.UserSurat)
+	srt.Nama = Nama
+	srt.Email = Email
+	srt.Telepon = Telepon
+	return InsertOneDoc(db, col, srt)
+}
+func InsertSurat(Isisurat string, Subject string, db *mongo.Database, col string) (InsertedID interface{}) {
+	srt := new(model.Surat)
+	srt.Isisurat = Isisurat
+	srt.Subject = Subject
+	return InsertOneDoc(db, col, srt)
+}
+func InsertKategoriSurat(NamaKategori string, Surat string, db *mongo.Database, col string) (InsertedID interface{}) {
+	srt := new(model.Kategorisurat)
+	srt.NamaKategori = NamaKategori
+	srt.Surat = srt.Surat
+	return InsertOneDoc(db, col, srt)
 }
 
-func InsertKategori(db string, kategori Kategorisurat) (insertedID interface{}) {
-	insertResult, err := MongoConnect(db).Collection("kategori").InsertOne(context.TODO(), kategori)
-	if err != nil {
-		fmt.Printf("InsertKategori: %v\n", err)
-	}
-	return insertResult.InsertedID
-}
-
-func InsertLokasi(db string, lokasi Lokasisurat) (insertedID interface{}) {
-	insertResult, err := MongoConnect(db).Collection("lokasi").InsertOne(context.TODO(), lokasi)
-	if err != nil {
-		fmt.Printf("InsertLokasi: %v\n", err)
-	}
-	return insertResult.InsertedID
-}
-
-func InsertAbout(db string, about Aboutsurat) (insertedID interface{}) {
-	insertResult, err := MongoConnect(db).Collection("about").InsertOne(context.TODO(), about)
-	if err != nil {
-		fmt.Printf("InsertAbout: %v\n", err)
-	}
-	return insertResult.InsertedID
-}
-
-func GetUserData(telepon string) (data []UserSurat) {
-	user := MongoConnect("suratdibai").Collection("users")
-	filter := bson.M{"telepon": telepon}
-	cursor, err := user.Find(context.TODO(), filter)
-	if err != nil {
-		fmt.Println("GetUserData :", err)
-	}
-	err = cursor.All(context.TODO(), &data)
-	if err != nil {
-		fmt.Println(err)
-	}
-	return
-}
-func GetNamaUser(nama string) (data []UserSurat) {
-	user := MongoConnect("suratdibai").Collection("users")
+func GetNamaUser(nama string, db *mongo.Database, col string) (data []model.UserSurat) {
+	user := db.Collection(col)
 	filter := bson.M{"nama": nama}
 	cursor, err := user.Find(context.TODO(), filter)
 	if err != nil {
@@ -74,13 +50,12 @@ func GetNamaUser(nama string) (data []UserSurat) {
 	}
 	return
 }
-
-func GetEmailData(isisurat string) (data []Surat) {
-	user := MongoConnect("suratdibai").Collection("surat")
-	filter := bson.M{"nosubject": isisurat}
+func GetUserData(telepon string, db *mongo.Database, col string) (data []model.UserSurat) {
+	user := db.Collection(col)
+	filter := bson.M{"telepon": telepon}
 	cursor, err := user.Find(context.TODO(), filter)
 	if err != nil {
-		fmt.Println("GetEmailData :", err)
+		fmt.Println("GetTeleponUser :", err)
 	}
 	err = cursor.All(context.TODO(), &data)
 	if err != nil {
@@ -88,20 +63,12 @@ func GetEmailData(isisurat string) (data []Surat) {
 	}
 	return
 }
-
-func InsertSuratData(db *mongo.Database, collect string, Isisurat string, Subject string) (InsertedID interface{}) {
-	var srt Surat
-	srt.Isisurat = Isisurat
-	srt.Subject = Subject
-	return InsertOneDoc(db, collect, srt)
-}
-
-func GetSurat(surat string) (data []Surat) {
-	user := MongoConnect("suratdibai").Collection("surat")
+func GetSurat(surat string, db *mongo.Database, col string) (data []model.UserSurat) {
+	user := db.Collection(col)
 	filter := bson.M{"subject": surat}
 	cursor, err := user.Find(context.TODO(), filter)
 	if err != nil {
-		fmt.Println("GetSurat :", err)
+		fmt.Println("GetSuratUser :", err)
 	}
 	err = cursor.All(context.TODO(), &data)
 	if err != nil {
@@ -109,16 +76,9 @@ func GetSurat(surat string) (data []Surat) {
 	}
 	return
 }
-func GetoSurato(hiya string) (data []Surat) {
-	user := MongoConnect("suratdibai").Collection("surat")
-	filter := bson.M{"subject": hiya}
-	cursor, err := user.Find(context.TODO(), filter)
-	if err != nil {
-		fmt.Println("GetSurat :", err)
-	}
-	err = cursor.All(context.TODO(), &data)
-	if err != nil {
-		fmt.Println(err)
-	}
-	return
+func InsertSuratChat(db *mongo.Database, collect string, Isisurat string, Subject string) (InsertedID interface{}) {
+	var srt model.Surat
+	srt.Isisurat = Isisurat
+	srt.Subject = Subject
+	return InsertOneDoc(db, collect, srt)
 }
