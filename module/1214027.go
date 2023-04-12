@@ -18,7 +18,7 @@ func InsertOneDoc(db *mongo.Database, collection string, doc interface{}) (inser
 }
 
 func InsertMataKuliah(db *mongo.Database, namamatakuliah string, kodematakuliah string, dosen string, sks string) (InsertedID interface{}) {
-	var matakuliah Matakuliah
+	var matakuliah Matakuliahbel
 	matakuliah.NamaMatakuliah = namamatakuliah
 	matakuliah.KodeMatakuliah = kodematakuliah
 	matakuliah.Dosen = dosen
@@ -28,7 +28,7 @@ func InsertMataKuliah(db *mongo.Database, namamatakuliah string, kodematakuliah 
 }
 
 func InsertJadwalKuliah(db *mongo.Database, hari string, jammulai string, jamselesai string, ruang string) (InsertedID interface{}) {
-	var jadwalkuliah Jadwalkuliah
+	var jadwalkuliah Jadwalkuliahbel
 	jadwalkuliah.Hari = hari
 	jadwalkuliah.JamMulai = jammulai
 	jadwalkuliah.JamSelesai = jamselesai
@@ -38,7 +38,7 @@ func InsertJadwalKuliah(db *mongo.Database, hari string, jammulai string, jamsel
 }
 
 func InsertKelas(db *mongo.Database, ruang string, kapasitasmhs string) (InsertedID interface{}) {
-	var kelas Kelas
+	var kelas Kelasbel
 	kelas.Ruang = ruang
 	kelas.KapasitasMhs = kapasitasmhs
 	
@@ -46,7 +46,7 @@ func InsertKelas(db *mongo.Database, ruang string, kapasitasmhs string) (Inserte
 }
 
 func InsertDosen(db *mongo.Database, namadosen string, kodedosen string, matakuliah string) (InsertedID interface{}) {
-	var dosen Dosen
+	var dosen Dosenbel
 	dosen.NamaDosen = namadosen
 	dosen.KodeDosen = kodedosen
 	dosen.Matakuliah = matakuliah
@@ -55,7 +55,7 @@ func InsertDosen(db *mongo.Database, namadosen string, kodedosen string, matakul
 }
 
 func InsertMahasiswa(db *mongo.Database, namamhs string, kelas string, prodi string) (InsertedID interface{}) {
-	var mahasiswa Mahasiswa
+	var mahasiswa Mahasiswabel
 	mahasiswa.NamaMhs = namamhs
 	mahasiswa.Kelas = kelas
 	mahasiswa.Prodi = prodi
@@ -63,7 +63,7 @@ func InsertMahasiswa(db *mongo.Database, namamhs string, kelas string, prodi str
 	return InsertOneDoc(db, "mahasiswa", mahasiswa)
 }
 
-func GetDataMatakuliah(kodematakuliah string, db *mongo.Database, col string) (data model.Matakuliah) {
+func GetDataMatakuliah(kodematakuliah string, db *mongo.Database, col string) (data model.Matakuliahbel) {
 	user := db.Collection(col)
 	filter := bson.M{"kodemtkuliah": kodematakuliah}
 	cursor, err := user.Find(context.TODO(), filter)
@@ -77,7 +77,7 @@ func GetDataMatakuliah(kodematakuliah string, db *mongo.Database, col string) (d
 	return
 }
 
-func GetDataJadwalkuliah(hari string, db *mongo.Database, col string) (data model.Jadwalkuliah) {
+func GetDataJadwalkuliah(hari string, db *mongo.Database, col string) (data model.Jadwalkuliahbel) {
 	user := db.Collection(col)
 	filter := bson.M{"hari": hari}
 	cursor, err := user.Find(context.TODO(), filter)
@@ -91,7 +91,7 @@ func GetDataJadwalkuliah(hari string, db *mongo.Database, col string) (data mode
 	return
 }
 
-func GetDataKelas(ruang string, db *mongo.Database, col string) (data model.Kelas) {
+func GetDataKelas(ruang string, db *mongo.Database, col string) (data model.Kelasbel) {
 	user := db.Collection(col)
 	filter := bson.M{"ruang": ruang}
 	cursor, err := user.Find(context.TODO(), filter)
@@ -105,7 +105,7 @@ func GetDataKelas(ruang string, db *mongo.Database, col string) (data model.Kela
 	return
 }
 
-func GetDataDosen(namadosen string, db *mongo.Database, col string) (data model.Dosen) {
+func GetDataDosen(namadosen string, db *mongo.Database, col string) (data model.Dosenbel) {
 	user := db.Collection(col)
 	filter := bson.M{"namadosen": namadosen}
 	cursor, err := user.Find(context.TODO(), filter)
@@ -119,7 +119,7 @@ func GetDataDosen(namadosen string, db *mongo.Database, col string) (data model.
 	return
 }
 
-func GetDataMahasiswa(namamhs string, db *mongo.Database, col string) (data model.Mahasiswa) {
+func GetDataMahasiswa(namamhs string, db *mongo.Database, col string) (data model.Mahasiswabel) {
 	user := db.Collection(col)
 	filter := bson.M{"namamhs": namamhs}
 	cursor, err := user.Find(context.TODO(), filter)

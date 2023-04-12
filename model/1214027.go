@@ -4,7 +4,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-type Matakuliah struct {
+type Matakuliahbel struct {
 	ID         		primitive.ObjectID `bson:"_id,omitempty" json:"_id"`
 	NamaMatakuliah	string             `bson:"namamatakuliah" json:"namamatakuliah"`
 	KodeMatakuliah 	string             `bson:"kodemtkuliah" json:"kodemtkuliah"`
@@ -12,7 +12,7 @@ type Matakuliah struct {
 	SKS   			string             `bson:"sks" json:"sks"`
 }
 
-type Jadwalkuliah struct {
+type Jadwalkuliahbel struct {
 	ID         	primitive.ObjectID `bson:"_id,omitempty" json:"_id"`
 	Hari		string             `bson:"hari" json:"hari"`
 	JamMulai 	string             `bson:"jammulai" json:"jammulai"`
@@ -20,20 +20,20 @@ type Jadwalkuliah struct {
 	Ruang   	string             `bson:"ruang" json:"ruang"`
 }
 
-type Kelas struct {
+type Kelasbel struct {
 	ID         		primitive.ObjectID `bson:"_id,omitempty" json:"_id"`
 	Ruang			string             `bson:"ruang" json:"ruang"`
 	KapasitasMhs 	string             `bson:"kapasitasmhs" json:"kapasitasmhs"`
 }
 
-type Dosen struct {
+type Dosenbel struct {
 	ID         	primitive.ObjectID `bson:"_id,omitempty" json:"_id"`
 	NamaDosen	string             `bson:"namadosen" json:"namadosen"`
 	KodeDosen 	string             `bson:"kodedosen" json:"kodedosen"`
 	Matakuliah 	string             `bson:"matakuliah" json:"matakuliah"`
 }
 
-type Mahasiswa struct {
+type Mahasiswabel struct {
 	ID      primitive.ObjectID `bson:"_id,omitempty" json:"_id"`
 	NamaMhs	string             `bson:"namamhs" json:"namamhs"`
 	Kelas	string             `bson:"kelas" json:"kelas"`
