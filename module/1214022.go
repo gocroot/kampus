@@ -70,7 +70,7 @@ func GetDataDashboardz(Username string, db *mongo.Database, col string) (data []
 }
 func GetDataMahasiswaz(Nama_mhs string, db *mongo.Database, col string) (data []model.Mahasiswanye) {
 	user := db.Collection(col)
-	filter := bson.M{"mahasiswa": Nama_mhs}
+	filter := bson.M{"Mahasiswa": Nama_mhs}
 	cursor, err := user.Find(context.TODO(), filter)
 	if err != nil {
 		fmt.Printf("getDataMahasiswa: %v\n", err)
