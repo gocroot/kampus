@@ -11,7 +11,7 @@ type Dafdir struct {
 	Kehadiran  string             `bson:"kehadiran,omitempty" json:"kehadiran,omitempty"`
 }
 
-type Nilai struct {
+type Nilaisis struct {
 	ID     primitive.ObjectID `bson:"_id,omitempty" json:"_id,omitempty"`
 	Matpel string             `bson:"matpel,omitempty" json:"matpel,omitempty"`
 	Kkm    string             `bson:"kkm,omitempty" json:"kkm,omitempty"`
@@ -25,7 +25,7 @@ type Dafpel struct {
 	Poin       string             `bson:"poin,omitempty" json:"poin,omitempty"`
 }
 
-type Pembayaran struct {
+type Pembayaransis struct {
 	ID         primitive.ObjectID `bson:"_id,omitempty" json:"_id,omitempty"`
 	Datetime   primitive.DateTime `bson:"datetime,omitempty" json:"datetime,omitempty"`
 	Keterangan string             `bson:"keterangan,omitempty" json:"keterangan,omitempty"`
