@@ -4,47 +4,66 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/gocroot/kampus/model"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
-func InsertUser(db string, user Userdaps) (insertedID interface{}) {
-	insertResult, err := MongoConnect(db).Collection("user").InsertOne(context.TODO(), user)
+func InsertOneDoc(db *mongo.Database, collection string, doc interface{}) (insertedID interface{}) {
+	insertResult, err := db.Collection(collection).InsertOne(context.TODO(), doc)
 	if err != nil {
-		fmt.Printf("InsertUser: %v\n", err)
-	}
-	return insertResult.InsertedID
-}
-func InsertPendaftaran(db string, pendaftaran Pendaftaran) (insertedID interface{}) {
-	insertResult, err := MongoConnect(db).Collection("pendaftaran").InsertOne(context.TODO(), pendaftaran)
-	if err != nil {
-		fmt.Printf("InsertPendaftaran: %v\n", err)
-	}
-	return insertResult.InsertedID
-}
-func InsertPembayaran(db string, pembayaran Pembayarandaps) (insertedID interface{}) {
-	insertResult, err := MongoConnect(db).Collection("pembayaran").InsertOne(context.TODO(), pembayaran)
-	if err != nil {
-		fmt.Printf("InsertPembayaran: %v\n", err)
-	}
-	return insertResult.InsertedID
-}
-func InsertPengumuman(db string, pengumuman Pengumuman) (insertedID interface{}) {
-	insertResult, err := MongoConnect(db).Collection("pengumuman").InsertOne(context.TODO(), pengumuman)
-	if err != nil {
-		fmt.Printf("InsertPengumuman: %v\n", err)
-	}
-	return insertResult.InsertedID
-}
-func InsertKursus(db string, kursus Kursus) (insertedID interface{}) {
-	insertResult, err := MongoConnect(db).Collection("kursus").InsertOne(context.TODO(), kursus)
-	if err != nil {
-		fmt.Printf("InsertKursus: %v\n", err)
+		fmt.Printf("InsertOneDoc: %v\n", err)
 	}
 	return insertResult.InsertedID
 }
 
-func GetDataUser(stats string) (data []User) {
-	user := MongoConnect("proyek-2").Collection("user")
+func InsertDataUserdaps(db *mongo.Database, nama string, gender string, email string, no_hp string) (InsertedID interface{}) {
+	var datauser model.Userdaps
+	datauser.Nama = nama
+	datauser.Gender = gender
+	datauser.Email = email
+	datauser.No_hp = no_hp
+
+	return InsertOneDoc(db, "user", datauser)
+}
+
+func InsertDataPendaftaran(db *mongo.Database, nama_siswa string, nis string, nik string) (InsertedID interface{}) {
+	var datapendaftaran model.Pendaftaran
+	datapendaftaran.Nama_siswa = nama_siswa
+	datapendaftaran.Nis = nis
+	datapendaftaran.Nik = nik
+
+	return InsertOneDoc(db, "pendaftaran", datapendaftaran)
+}
+
+func InsertDataPembayarandaps(db *mongo.Database, status string, total_bayar string) (InsertedID interface{}) {
+	var datapembayaran model.Pembayarandaps
+	datapembayaran.Status = status
+	datapembayaran.Total_bayar = total_bayar
+
+	return InsertOneDoc(db, "pembayaran", datapembayaran)
+}
+
+func InsertDataPengumuman(db *mongo.Database, hasil_seleksi string, nilai string, program string) (InsertedID interface{}) {
+	var datapengumuman model.Pengumuman
+	datapengumuman.Hasil_seleksi = hasil_seleksi
+	datapengumuman.Nilai = nilai
+	datapengumuman.Program = program
+
+	return InsertOneDoc(db, "pengumuman", datapengumuman)
+}
+
+func InsertDataKursus(db *mongo.Database, nama_kursus string, jenjang_kursus string, pengajar string) (InsertedID interface{}) {
+	var datakursus model.Kursus
+	datakursus.Nama_kursus = nama_kursus
+	datakursus.Jenjang_kursus = jenjang_kursus
+	datakursus.Pengajar = pengajar
+
+	return InsertOneDoc(db, "kursus", datakursus)
+}
+
+func GetDataUser(stats string, db *mongo.Database, col string) (data []model.Userdaps) {
+	user := db.Collection(col)
 	filter := bson.M{"nama": stats}
 	cursor, err := user.Find(context.TODO(), filter)
 	if err != nil {
@@ -57,8 +76,8 @@ func GetDataUser(stats string) (data []User) {
 	return
 }
 
-func GetDataPendaftaran(stats string) (data []Pendaftaran) {
-	user := MongoConnect("proyek-2").Collection("pendaftaran")
+func GetDataPendaftaran(stats string, db *mongo.Database, col string) (data []model.Pendaftaran) {
+	user := db.Collection(col)
 	filter := bson.M{"nis": stats}
 	cursor, err := user.Find(context.TODO(), filter)
 	if err != nil {
@@ -71,8 +90,8 @@ func GetDataPendaftaran(stats string) (data []Pendaftaran) {
 	return
 }
 
-func GetDataPembayaran(stats string) (data []Pembayaran) {
-	user := MongoConnect("proyek-2").Collection("pembayaran")
+func GetDataPembayaran(stats string, db *mongo.Database, col string) (data []model.Pembayarandaps) {
+	user := db.Collection(col)
 	filter := bson.M{"status": stats}
 	cursor, err := user.Find(context.TODO(), filter)
 	if err != nil {
@@ -85,8 +104,8 @@ func GetDataPembayaran(stats string) (data []Pembayaran) {
 	return
 }
 
-func GetDataPengumuman(stats string) (data []Pengumuman) {
-	user := MongoConnect("proyek-2").Collection("pengumuman")
+func GetDataPengumuman(stats string, db *mongo.Database, col string) (data []model.Pengumuman) {
+	user := db.Collection(col)
 	filter := bson.M{"program": stats}
 	cursor, err := user.Find(context.TODO(), filter)
 	if err != nil {
@@ -99,8 +118,8 @@ func GetDataPengumuman(stats string) (data []Pengumuman) {
 	return
 }
 
-func GetDataKursus(stats string) (data []Kursus) {
-	user := MongoConnect("proyek-2").Collection("kursus")
+func GetDataKursus(stats string, db *mongo.Database, col string) (data []model.Kursus) {
+	user := db.Collection(col)
 	filter := bson.M{"pengajar": stats}
 	cursor, err := user.Find(context.TODO(), filter)
 	if err != nil {
