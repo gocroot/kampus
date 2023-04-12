@@ -4,51 +4,55 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/gocroot/kampus/model"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
-func InsertDashboard(db string, dashboard Dashboardnye) (insertedID interface{}) {
-	insertResult, err := MongoConnect(db).Collection("dashboard").InsertOne(context.TODO(), dashboard)
-	if err != nil {
-		fmt.Printf("InsertDashboard: %v\n", err)
-	}
-	return insertResult.InsertedID
+func InsertDashboardq(db *mongo.Database, Username string, Email string, Location string, Orders string, Lastorders string, Totalspent string, Sks string) (InsertedID interface{}) {
+	var dashboardz model.Dashboardnye
+	dashboardz.Username = Username
+	dashboardz.Email = Email
+	dashboardz.Location = Location
+	dashboardz.Orders = Orders
+	dashboardz.Lastorders = Lastorders
+	dashboardz.Totalspent = Totalspent
+	dashboardz.Sks = Sks
+	return InsertOneDoc(db, "data_Dashboard", dashboardz)
 }
-func InsertMahasiswa(db string, mahasiswa Mahasiswanye) (insertedID interface{}) {
-	insertResult, err := MongoConnect(db).Collection("mahasiswa").InsertOne(context.TODO(), mahasiswa)
-	if err != nil {
-		fmt.Printf("InsertMahasiswa: %v\n", err)
-	}
-	return insertResult.InsertedID
+func InsertMahasiswaq(db *mongo.Database, Nama_mhs string, email_mhs string, gambar_mhs string) (InsertedID interface{}) {
+	var mahasiswaz model.Mahasiswanye
+	mahasiswaz.Nama_mhs = Nama_mhs
+	mahasiswaz.Email_mhs = email_mhs
+	mahasiswaz.Gambar_mhs = gambar_mhs
+	return InsertOneDoc(db, "data_Mahasiswa", mahasiswaz)
 }
-func InsertDosen(db string, dosen Dosenye) (insertedID interface{}) {
-	insertResult, err := MongoConnect(db).Collection("dosen").InsertOne(context.TODO(), dosen)
-	if err != nil {
-		fmt.Printf("InsertDosen: %v\n", err)
-	}
-	return insertResult.InsertedID
+func InsertDosenq(db *mongo.Database, nama string, Jabatan string, Noted string, img_dosen string) (InsertedID interface{}) {
+	var dosenz model.Dosenye
+	dosenz.Nama = nama
+	dosenz.Jabatan = Jabatan
+	dosenz.Noted = Noted
+	dosenz.Img_dosen = img_dosen
+	return InsertOneDoc(db, "data_Dosen", dosenz)
 }
-func InsertAbout(db string, about Aboutnye) (insertedID interface{}) {
-	insertResult, err := MongoConnect(db).Collection("about").InsertOne(context.TODO(), about)
-	if err != nil {
-		fmt.Printf("InsertAbout: %v\n", err)
-	}
-	return insertResult.InsertedID
+func InsertAboutnye(db *mongo.Database, pertanyaan string, jawaban string) (InsertedID interface{}) {
+	var aboutz model.Aboutnye
+	aboutz.Pertanyaan = pertanyaan
+	aboutz.Jawaban = jawaban
+	return InsertOneDoc(db, "data_about", aboutz)
 }
-func InsertContacus(db string, contacus Contacusnye) (insertedID interface{}) {
-	insertResult, err := MongoConnect(db).Collection("contacus").InsertOne(context.TODO(), contacus)
-	if err != nil {
-		fmt.Printf("InsertContacus: %v\n", err)
-	}
-	return insertResult.InsertedID
+func InsertContacusq(db *mongo.Database, phone_number string, email string) (InsertedID interface{}) {
+	var contacuszz model.Contacusnye
+	contacuszz.Phone_number = phone_number
+	contacuszz.Email = email
+	return InsertOneDoc(db, "data_about", contacuszz)
 }
-
-func GetDataDosen(stats string) (data []Dosenye) {
-	user := MongoConnect("tablerps").Collection("dosen")
-	filter := bson.M{"Jabatan": stats}
+func GetDataDashboardz(Username string, db *mongo.Database, col string) (data []model.Dashboardnye) {
+	user := db.Collection(col)
+	filter := bson.M{"Username": Username}
 	cursor, err := user.Find(context.TODO(), filter)
 	if err != nil {
-		fmt.Println("GetDataDosen :", err)
+		fmt.Printf("getDataDashboard: %v\n", err)
 	}
 	err = cursor.All(context.TODO(), &data)
 	if err != nil {
@@ -56,12 +60,12 @@ func GetDataDosen(stats string) (data []Dosenye) {
 	}
 	return
 }
-func GetDataAbout(stats string) (data []Aboutnye) {
-	user := MongoConnect("tablerps").Collection("about")
-	filter := bson.M{"pertanyaan": stats}
+func GetDataMahasiswaz(Nama_mhs string, db *mongo.Database, col string) (data []model.Mahasiswanye) {
+	user := db.Collection(col)
+	filter := bson.M{"Mahasiswa": Nama_mhs}
 	cursor, err := user.Find(context.TODO(), filter)
 	if err != nil {
-		fmt.Println("GetDataAbout :", err)
+		fmt.Printf("getDataMahasiswa: %v\n", err)
 	}
 	err = cursor.All(context.TODO(), &data)
 	if err != nil {
@@ -69,12 +73,12 @@ func GetDataAbout(stats string) (data []Aboutnye) {
 	}
 	return
 }
-func GetDataContacus(stats string) (data []Contacusnye) {
-	user := MongoConnect("tablerps").Collection("contacus")
-	filter := bson.M{"phone_number": stats}
+func GetDataDosenz(Jabatan string, db *mongo.Database, col string) (data []model.Dosenye) {
+	user := db.Collection(col)
+	filter := bson.M{"Jabatan": Jabatan}
 	cursor, err := user.Find(context.TODO(), filter)
 	if err != nil {
-		fmt.Println("GetDataContacus :", err)
+		fmt.Printf("getDataDosen: %v\n", err)
 	}
 	err = cursor.All(context.TODO(), &data)
 	if err != nil {
@@ -82,12 +86,12 @@ func GetDataContacus(stats string) (data []Contacusnye) {
 	}
 	return
 }
-func GetDataDashboard(stats string) (data []Dashboardnye) {
-	user := MongoConnect("tablerps").Collection("dashboard")
-	filter := bson.M{"Location": stats}
+func GetDataAboutz(pertanyaan string, db *mongo.Database, col string) (data []model.Aboutnye) {
+	user := db.Collection(col)
+	filter := bson.M{"pertanyaan": pertanyaan}
 	cursor, err := user.Find(context.TODO(), filter)
 	if err != nil {
-		fmt.Println("GetDataDashboard :", err)
+		fmt.Printf("getDataAbout: %v\n", err)
 	}
 	err = cursor.All(context.TODO(), &data)
 	if err != nil {
@@ -95,12 +99,12 @@ func GetDataDashboard(stats string) (data []Dashboardnye) {
 	}
 	return
 }
-func GetDataMahasiswa(stats string) (data []Mahasiswanye) {
-	user := MongoConnect("tablerps").Collection("mahasiswa")
-	filter := bson.M{"email_mhs": stats}
+func GetDataContacusz(phone_number string, db *mongo.Database, col string) (data []model.Contacusnye) {
+	user := db.Collection(col)
+	filter := bson.M{"Contacus": phone_number}
 	cursor, err := user.Find(context.TODO(), filter)
 	if err != nil {
-		fmt.Println("GetDataMahasiswa :", err)
+		fmt.Printf("getDataContacus: %v\n", err)
 	}
 	err = cursor.All(context.TODO(), &data)
 	if err != nil {
