@@ -9,14 +9,6 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-func InsertOneDoc(db *mongo.Database, collection string, doc interface{}) (insertedID interface{}) {
-	insertResult, err := db.Collection(collection).InsertOne(context.TODO(), doc)
-	if err != nil {
-		fmt.Printf("InsertOneDoc: %v\n", err)
-	}
-	return insertResult.InsertedID
-}
-
 func InsertUserData(Nama string, Email string, Telepon string, db *mongo.Database, col string) (InsertedID interface{}) {
 	srt := new(model.UserSurat)
 	srt.Nama = Nama

@@ -9,14 +9,6 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-func InsertOneDoc(db *mongo.Database, collection string, doc interface{}) (insertedID interface{}) {
-	insertResult, err := db.Collection(collection).InsertOne(context.TODO(), doc)
-	if err != nil {
-		fmt.Printf("InsertOneDoc: %v\n", err)
-	}
-	return insertResult.InsertedID
-}
-
 func InsertDataUserdaps(db *mongo.Database, nama string, gender string, email string, no_hp string) (InsertedID interface{}) {
 	var datauser model.Userdaps
 	datauser.Nama = nama
@@ -90,7 +82,7 @@ func GetDataPendaftaran(stats string, db *mongo.Database, col string) (data []mo
 	return
 }
 
-func GetDataPembayaran(stats string, db *mongo.Database, col string) (data []model.Pembayarandaps) {
+func GetDataPembayarandaffa(stats string, db *mongo.Database, col string) (data []model.Pembayarandaps) {
 	user := db.Collection(col)
 	filter := bson.M{"status": stats}
 	cursor, err := user.Find(context.TODO(), filter)

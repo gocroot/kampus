@@ -11,16 +11,8 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-func InsertOneDoc(db *mongo.Database, collection string, doc interface{}) (insertedID interface{}) {
-	insertResult, err := db.Collection(collection).InsertOne(context.TODO(), doc)
-	if err != nil {
-		fmt.Printf("InsertOneDoc: %v\n", err)
-	}
-	return insertResult.InsertedID
-}
-
 func InsertDafdir(db *mongo.Database, keterangan string, kehadiran string) (InsertedID interface{}) {
-	var dafdir Dafdir
+	var dafdir model.Dafdir
 	dafdir.Datetime = primitive.NewDateTimeFromTime(time.Now().UTC())
 	dafdir.Keterangan = keterangan
 	dafdir.Kehadiran = kehadiran
@@ -28,7 +20,7 @@ func InsertDafdir(db *mongo.Database, keterangan string, kehadiran string) (Inse
 }
 
 func InsertNilai(db *mongo.Database, matpel string, kkm string, grade string) (InsertedID interface{}) {
-	var nilai Nilai
+	var nilai model.Nilaisis
 	nilai.Matpel = matpel
 	nilai.Kkm = kkm
 	nilai.Grade = grade
@@ -36,7 +28,7 @@ func InsertNilai(db *mongo.Database, matpel string, kkm string, grade string) (I
 }
 
 func InsertDafpel(db *mongo.Database, keterangan string, poin string) (InsertedID interface{}) {
-	var dafpel Dafpel
+	var dafpel model.Dafpel
 	dafpel.Datetime = primitive.NewDateTimeFromTime(time.Now().UTC())
 	dafpel.Keterangan = keterangan
 	dafpel.Poin = poin
@@ -44,7 +36,7 @@ func InsertDafpel(db *mongo.Database, keterangan string, poin string) (InsertedI
 }
 
 func InsertPembayaran(db *mongo.Database, keterangan string, status string) (InsertedID interface{}) {
-	var pembayaran Pembayaran
+	var pembayaran model.Pembayaransis
 	pembayaran.Datetime = primitive.NewDateTimeFromTime(time.Now().UTC())
 	pembayaran.Keterangan = keterangan
 	pembayaran.Status = status
@@ -65,7 +57,7 @@ func GetDataDafdir(ket string, db *mongo.Database, col string) (data model.Dafdi
 	return data
 }
 
-func GetDataNilai(matpel string, db *mongo.Database, col string) (data model.Nilai) {
+func GetDataNilai(matpel string, db *mongo.Database, col string) (data model.Nilaisis) {
 	user := db.Collection(col)
 	filter := bson.M{"matpel": matpel}
 	cursor, err := user.Find(context.TODO(), filter)
@@ -93,7 +85,7 @@ func GetDataDafpel(ket string, db *mongo.Database, col string) (data model.Dafpe
 	return data
 }
 
-func GetDataPembayaran(stats string, db *mongo.Database, col string) (data model.Pembayaran) {
+func GetDataPembayaransaw(stats string, db *mongo.Database, col string) (data model.Pembayaransis) {
 	user := db.Collection(col)
 	filter := bson.M{"status": stats}
 	cursor, err := user.Find(context.TODO(), filter)
