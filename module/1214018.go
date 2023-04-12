@@ -3,32 +3,13 @@ package module
 import (
 	"context"
 	"fmt"
-	"os"
 
+	"github.com/gocroot/kampus/model"
 	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-var MongoString string = os.Getenv("MONGOSTRING")
-
-func MongoConnect(dbname string) (db *mongo.Database) {
-	client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI(MongoString))
-	if err != nil {
-		fmt.Printf("MongoConnect: %v\n", err)
-	}
-	return client.Database(dbname)
-}
-
-func InsertOneDoc(db string, collection string, doc interface{}) (insertedID interface{}) {
-	insertResult, err := MongoConnect(db).Collection(collection).InsertOne(context.TODO(), doc)
-	if err != nil {
-		fmt.Printf("InsertOneDoc: %v\n", err)
-	}
-	return insertResult.InsertedID
-}
-
 // insert data ke koleksi Mahasiswa
-func insertMahasiswa(db *mongo.Database, mhs Mahasiswawoylah) (insertedID interface{}, err error) {
+func insertMahasiswa(db *mongo.Database, mhs model.Mahasiswawoylah) (insertedID interface{}, err error) {
 	result, err := db.Collection("Mahasiswa").InsertOne(context.Background(), mhs)
 	if err != nil {
 		return nil, fmt.Errorf("failed to insert Mahasiswa: %v", err)
@@ -37,7 +18,7 @@ func insertMahasiswa(db *mongo.Database, mhs Mahasiswawoylah) (insertedID interf
 }
 
 // insert data ke koleksi Jurusan
-func insertJurusan(db *mongo.Database, jur Jurusanwoy) (insertedID interface{}, err error) {
+func insertJurusan(db *mongo.Database, jur model.Jurusanwoy) (insertedID interface{}, err error) {
 	result, err := db.Collection("Jurusan").InsertOne(context.Background(), jur)
 	if err != nil {
 		return nil, fmt.Errorf("failed to insert Jurusan: %v", err)
@@ -46,7 +27,7 @@ func insertJurusan(db *mongo.Database, jur Jurusanwoy) (insertedID interface{}, 
 }
 
 // insert data ke koleksi Nilai
-func insertNilai(db *mongo.Database, n Nilaiwoy) (insertedID interface{}, err error) {
+func insertNilai(db *mongo.Database, n model.Nilaiwoy) (insertedID interface{}, err error) {
 	result, err := db.Collection("Nilai").InsertOne(context.Background(), n)
 	if err != nil {
 		return nil, fmt.Errorf("failed to insert Nilai: %v", err)
@@ -55,7 +36,7 @@ func insertNilai(db *mongo.Database, n Nilaiwoy) (insertedID interface{}, err er
 }
 
 // insert data ke koleksi Alamat
-func insertAlamat(db *mongo.Database, alamat Alamatwoy) (insertedID interface{}, err error) {
+func insertAlamat(db *mongo.Database, alamat model.Alamatwoy) (insertedID interface{}, err error) {
 	result, err := db.Collection("Alamat").InsertOne(context.Background(), alamat)
 	if err != nil {
 		return nil, fmt.Errorf("failed to insert Alamat: %v", err)
@@ -64,7 +45,7 @@ func insertAlamat(db *mongo.Database, alamat Alamatwoy) (insertedID interface{},
 }
 
 // insert data ke koleksi NPM
-func insertNPM(db *mongo.Database, npm NPMwoylah) (insertedID interface{}, err error) {
+func insertNPM(db *mongo.Database, npm model.NPMwoylah) (insertedID interface{}, err error) {
 	result, err := db.Collection("NPM").InsertOne(context.Background(), npm)
 	if err != nil {
 		return nil, fmt.Errorf("failed to insert NPM: %v", err)
