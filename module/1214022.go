@@ -9,14 +9,6 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-func InsertOneDoc(db *mongo.Database, collection string, doc interface{}) (insertedID interface{}) {
-	insertResult, err := db.Collection(collection).InsertOne(context.TODO(), doc)
-	if err != nil {
-		fmt.Printf("InsertOneDoc: %v\n", err)
-	}
-	return insertResult.InsertedID
-}
-
 func InsertDashboardq(db *mongo.Database, Username string, Email string, Location string, Orders string, Lastorders string, Totalspent string, Sks string) (InsertedID interface{}) {
 	var dashboardz model.Dashboardnye
 	dashboardz.Username = Username
