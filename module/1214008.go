@@ -3,33 +3,13 @@ package module
 import (
 	"context"
 	"fmt"
-	"os"
 
+	"github.com/gocroot/kampus/model"
 	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-var MongoString string = os.Getenv("MONGOSTRING")
-
-func MongoConnect(dbname string) (db *mongo.Database) {
-	client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI(MongoString))
-	if err != nil {
-		fmt.Printf("MongoConnect: %v\n", err)
-	}
-	return client.Database(dbname)
-}
-
-func InsertOneDoc(db string, collection string, doc interface{}) (insertedID interface{}) {
-	insertResult, err := MongoConnect(db).Collection(collection).InsertOne(context.TODO(), doc)
-	if err != nil {
-		fmt.Printf("InsertOneDoc: %v\n", err)
-	}
-	return insertResult.InsertedID
-}
-
 func InsertDataKaryawan(db, nama string, status string, jabatan string, gaji string) (InsertedID interface{}) {
-	var datakaryawan Karyawan
+	var datakaryawan model.Karyawan
 	datakaryawan.Nama = nama
 	datakaryawan.Status = status
 	datakaryawan.Jabatan = jabatan
@@ -37,42 +17,42 @@ func InsertDataKaryawan(db, nama string, status string, jabatan string, gaji str
 
 	return InsertOneDoc(db, "karyawan", datakaryawan)
 }
-func InsertKaryawan(db string, karyawan Karyawan) (insertedID interface{}) {
+func InsertKaryawan(db string, karyawan model.Karyawan) (insertedID interface{}) {
 	insertResult, err := MongoConnect(db).Collection("karyawan").InsertOne(context.TODO(), karyawan)
 	if err != nil {
 		fmt.Printf("InsertKaryawan: %v\n", err)
 	}
 	return insertResult.InsertedID
 }
-func InsertHonor(db string, honor Honor) (insertedID interface{}) {
+func InsertHonor(db string, honor model.Honor) (insertedID interface{}) {
 	insertResult, err := MongoConnect(db).Collection("honor").InsertOne(context.TODO(), honor)
 	if err != nil {
 		fmt.Printf("InsertHonor: %v\n", err)
 	}
 	return insertResult.InsertedID
 }
-func InsertJob(db string, job Job) (insertedID interface{}) {
+func InsertJob(db string, job model.Job) (insertedID interface{}) {
 	insertResult, err := MongoConnect(db).Collection("job").InsertOne(context.TODO(), job)
 	if err != nil {
 		fmt.Printf("InsertJob: %v\n", err)
 	}
 	return insertResult.InsertedID
 }
-func InsertTeam(db string, team Team) (insertedID interface{}) {
+func InsertTeam(db string, team model.Team) (insertedID interface{}) {
 	insertResult, err := MongoConnect(db).Collection("team").InsertOne(context.TODO(), team)
 	if err != nil {
 		fmt.Printf("InsertTeam: %v\n", err)
 	}
 	return insertResult.InsertedID
 }
-func InsertAbout(db string, about Abouttt) (insertedID interface{}) {
+func InsertAbout(db string, about model.Abouttt) (insertedID interface{}) {
 	insertResult, err := MongoConnect(db).Collection("about").InsertOne(context.TODO(), about)
 	if err != nil {
 		fmt.Printf("InsertAbout: %v\n", err)
 	}
 	return insertResult.InsertedID
 }
-func GetDataKaryawan(stats string) (data []Karyawan) {
+func GetDataKaryawan(stats string) (data []model.Karyawan) {
 	user := MongoConnect("penggajian").Collection("karyawan")
 	filter := bson.M{"status": stats}
 	cursor, err := user.Find(context.TODO(), filter)

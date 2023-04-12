@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/gocroot/kampus/model"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
@@ -16,8 +17,8 @@ func InsertOneDoc(db *mongo.Database, collection string, doc interface{}) (inser
 	return insertResult.InsertedID
 }
 
-func InsertDataComp(db *mongo.Database, sistem string, status string, bio User) (InsertedID interface{}) {
-	var datacomp DataComplain
+func InsertDataComp(db *mongo.Database, sistem string, status string, bio model.Userhd) (InsertedID interface{}) {
+	var datacomp model.DataComplainhd
 	datacomp.Sistemcomp = sistem
 	datacomp.Status = status
 	datacomp.Biodata = bio
@@ -25,7 +26,7 @@ func InsertDataComp(db *mongo.Database, sistem string, status string, bio User) 
 }
 
 func InsertDataHelper(helper string, username string, nama string, email string, handphone string, db *mongo.Database, col string) (InsertedID interface{}) {
-	help := new(Helper)
+	help := new(model.Helperhd)
 	help.Helpid = helper
 	help.Username = username
 	help.Nama = nama
@@ -34,7 +35,7 @@ func InsertDataHelper(helper string, username string, nama string, email string,
 	return InsertOneDoc(db, col, help)
 }
 
-func GetDataCompFromStatus(status string, db *mongo.Database, col string) (data DataComplain) {
+func GetDataCompFromStatus(status string, db *mongo.Database, col string) (data model.DataComplainhd) {
 	user := db.Collection(col)
 	filter := bson.M{"status": status}
 	err := user.FindOne(context.TODO(), filter).Decode(&data)
@@ -44,7 +45,7 @@ func GetDataCompFromStatus(status string, db *mongo.Database, col string) (data 
 	return data
 }
 
-func GetDataAllbyStats(stats string, db *mongo.Database, col string) (data []DataComplain) {
+func GetDataAllbyStats(stats string, db *mongo.Database, col string) (data []model.DataComplainhd) {
 	user := db.Collection(col)
 	filter := bson.M{"status": stats}
 	cursor, err := user.Find(context.TODO(), filter)
@@ -58,7 +59,7 @@ func GetDataAllbyStats(stats string, db *mongo.Database, col string) (data []Dat
 	return
 }
 
-func GetDataHelperFromPhone(phone string, db *mongo.Database, col string) (data Helper) {
+func GetDataHelperFromPhone(phone string, db *mongo.Database, col string) (data model.Helperhd) {
 	user := db.Collection(col)
 	filter := bson.M{"handphone": phone}
 	err := user.FindOne(context.TODO(), filter).Decode(&data)
@@ -68,7 +69,7 @@ func GetDataHelperFromPhone(phone string, db *mongo.Database, col string) (data 
 	return data
 }
 
-func DeleteDataHelper(phone string, db *mongo.Database, col string) (data Helper) {
+func DeleteDataHelper(phone string, db *mongo.Database, col string) (data model.Helperhd) {
 	user := db.Collection(col)
 	filter := bson.M{"handphone": phone}
 	err, _ := user.DeleteOne(context.TODO(), filter)
@@ -79,7 +80,7 @@ func DeleteDataHelper(phone string, db *mongo.Database, col string) (data Helper
 	return data
 }
 
-func GetDataCompFromHandphone(phone string, db *mongo.Database, col string) (data DataComplain) {
+func GetDataCompFromHandphone(phone string, db *mongo.Database, col string) (data model.DataComplainhd) {
 	user := db.Collection(col)
 	filter := bson.M{"user.handphone": phone}
 	err := user.FindOne(context.TODO(), filter).Decode(&data)
@@ -89,7 +90,7 @@ func GetDataCompFromHandphone(phone string, db *mongo.Database, col string) (dat
 	return data
 }
 
-func GetDataJumlah(tahun string, db *mongo.Database, col string) (data []JumlahComplain) {
+func GetDataJumlah(tahun string, db *mongo.Database, col string) (data []model.JumlahComplainhd) {
 	user := db.Collection(col)
 	filter := bson.M{"tahun": tahun}
 	cursor, err := user.Find(context.TODO(), filter)
@@ -104,7 +105,7 @@ func GetDataJumlah(tahun string, db *mongo.Database, col string) (data []JumlahC
 }
 
 func InsertJumlahComplain(db *mongo.Database, collect string, bulan string, tahun string, jumlah string) (InsertedID interface{}) {
-	var jumcomp JumlahComplain
+	var jumcomp model.JumlahComplainhd
 	jumcomp.Tahun = tahun
 	jumcomp.Bulan = bulan
 	jumcomp.Jumlah = jumlah
