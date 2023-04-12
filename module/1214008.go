@@ -46,15 +46,15 @@ func InsertDataTeam(db *mongo.Database, nama string, deskripsi string) (Inserted
 	datateam.Nama = nama
 	datateam.Deskripsi = deskripsi
 
-	return InsertOneDoc(db, "job", datateam)
+	return InsertOneDoc(db, "team", datateam)
 }
-func InsertDataAbout(db *mongo.Database, isi_satu string, isi_dua string, image string) (InsertedID interface{}) {
+func InsertDataAbouttt(db *mongo.Database, isi_satu string, isi_dua string, image string) (InsertedID interface{}) {
 	var dataabout model.Abouttt
 	dataabout.Isi_satu = isi_satu
 	dataabout.Isi_dua = isi_dua
 	dataabout.Image = image
 
-	return InsertOneDoc(db, "job", dataabout)
+	return InsertOneDoc(db, "about", dataabout)
 }
 func GetKaryawan(stats string, db *mongo.Database, col string) (data []model.Karyawan) {
 	user := db.Collection(col)
