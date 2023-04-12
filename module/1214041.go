@@ -33,9 +33,9 @@ func InsertOneDoc(db *mongo.Database, collection string, doc interface{}) (inser
 	return insertResult.InsertedID
 }
 
-func InsertProfile(pendidikan string, username string, bio string, checkin string, biodata Profile, db *mongo.Database) (InsertID interface{}) {
+func InsertProfile(studying string, username string, bio string, checkin string, biodata Profile, db *mongo.Database) (InsertID interface{}) {
     var listdata ListData
-    listdata.Pendidikan = pendidikan
+    listdata.studying = studying
     listdata.Username = username
     listdata.Bio = bio
     listdata.Checkin = checkin
