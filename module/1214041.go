@@ -2,11 +2,11 @@ package module
 import (
     "context"
     "fmt"
-    
+
 
     "go.mongodb.org/mongo-driver/bson"
     "go.mongodb.org/mongo-driver/mongo"
-   
+
 )
 
 type Profile struct {
@@ -17,7 +17,7 @@ type Profile struct {
 }
 
 type ListData struct{
-	Pendidikan  string    `bson:"pendidikan"`
+	Studying  string    `bson:"pendidikan"`
 	Bio         string    `bson:"bio"`
 	Username    string    `bson:"username"`
 	Checkin     string    `bson:"checkin"`
@@ -25,17 +25,17 @@ type ListData struct{
 }
 
 
-func InsertOneDoc(db *mongo.Database, collection string, doc interface{}) (insertedID interface{}) {
+func InsertSatuDoc(db *mongo.Database, collection string, doc interface{}) (insertedID interface{}) {
 	insertResult, err := db.Collection(collection).InsertOne(context.TODO(), doc)
 	if err != nil {
-		fmt.Printf("InsertOneDoc: %v\n", err)
+		fmt.Printf("InsertSatuDoc: %v\n", err)
 	}
 	return insertResult.InsertedID
 }
 
 func InsertProfile(studying string, username string, bio string, checkin string, biodata Profile, db *mongo.Database) (InsertID interface{}) {
     var listdata ListData
-    listdata.studying = studying
+    listdata.Studying = studying
     listdata.Username = username
     listdata.Bio = bio
     listdata.Checkin = checkin
