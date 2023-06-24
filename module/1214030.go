@@ -26,7 +26,7 @@ func Profile(Isi_satu string, db *mongo.Database, col string) (InsertedID interf
 	DataLam.Isi_satu= Isi_satu
 	return InsertOneDoc(db, col, DataLam)
 }
-func GetDataPeringkat(peringkat string, db *mongo.Database, col string) (data []model.UserSurat) {
+func GetDataPeringkat(peringkat string, db *mongo.Database, col string) (data []model.DataAkreditas) {
 	user := db.Collection(col)
 	filter := bson.M{"peringkat": peringkat}
 	cursor, err := user.Find(context.TODO(), filter)
@@ -39,7 +39,7 @@ func GetDataPeringkat(peringkat string, db *mongo.Database, col string) (data []
 	}
 	return
 }
-func GetDataStatus(peringkat string, db *mongo.Database, col string) (data []model.UserSurat) {
+func GetDataStatus(peringkat string, db *mongo.Database, col string) (data []model.DataAkreditas) {
 	user := db.Collection(col)
 	filter := bson.M{"peringkat": peringkat}
 	cursor, err := user.Find(context.TODO(), filter)
