@@ -1,50 +1,33 @@
 package module
 
 import (
+	"context"
+	"fmt"
+
 	"github.com/gocroot/kampus/model"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-func InsertPelanggantagih(db *mongo.Database, nm string, alm string, tlp string, em string) (InsertedID interface{}) {
-	var pelanggan model.Pelanggantagih
-	pelanggan.Nama = nm
-	pelanggan.Alamat = alm
-	pelanggan.NoTelepon = tlp
-	pelanggan.Email = em
-
-	return InsertOneDoc(db, "pelanggan", pelanggan)
+func InsertPelanggantagih(Nama string, Alamat string, NoTelepon string, Email string, db *mongo.Database, col string) (InsertedID interface{}) {
+	plg := new(model.Pelanggantagih)
+	plg.Nama = Nama
+	plg.Alamat = Alamat
+	plg.NoTelepon = NoTelepon
+	plg.Email = Email
+	return InsertOneDoc(db, col, plg)
 }
 
-func InsertTagihan(db *mongo.Database, tgh string, tth string, sp string) (InsertedID interface{}) {
-	var tagihan model.Tagihan
-	tagihan.TanggalTagihan = tgh
-	tagihan.TotalTagihan = tth
-	tagihan.StatusPembayaran = sp
-
-	return InsertOneDoc(db, "tagihan", tagihan)
-}
-
-func InsertDataPembayarantagih(db *mongo.Database, tby string, jby string, mby string) (InsertedID interface{}) {
-	var pembayaran model.Pembayarantagih
-	pembayaran.TanggalPembayaran = tby
-	pembayaran.JumlahPembayaran = jby
-	pembayaran.MetodePembayaran = mby
-
-	return InsertOneDoc(db, "Pembayaran", pembayaran)
-}
-
-func InserDatatProduktagih(db *mongo.Database, npr string, hpr string) (InsertedID interface{}) {
-	var produk model.Produktagih
-	produk.NamaProduk = npr
-	produk.HargaProduk = hpr
-
-	return InsertOneDoc(db, "produk", produk)
-}
-
-func InsertDataAbouttagih(db *mongo.Database, satu string, dua string) (InsertedID interface{}) {
-	var about model.Abouttagih
-	about.IsiSatu = satu
-	about.IsiDua = dua
-
-	return InsertOneDoc(db, "about", about)
+func GetUserNama(nama string, db *mongo.Database, col string) (data []model.Pelanggantagih) {
+	user := db.Collection(col)
+	filter := bson.M{"nama": nama}
+	cursor, err := user.Find(context.TODO(), filter)
+	if err != nil {
+		fmt.Println("GetUserNama :", err)
+	}
+	err = cursor.All(context.TODO(), &data)
+	if err != nil {
+		fmt.Println(err)
+	}
+	return
 }
