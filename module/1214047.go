@@ -55,7 +55,7 @@ func GetUserData(telepon string, db *mongo.Database, col string) (data []model.U
 	}
 	return
 }
-func GetSurat(surat string, db *mongo.Database, col string) (data []model.UserSurat) {
+func GetSurat(surat string, db *mongo.Database, col string) (data []model.Surat) {
 	user := db.Collection(col)
 	filter := bson.M{"subject": surat}
 	cursor, err := user.Find(context.TODO(), filter)
