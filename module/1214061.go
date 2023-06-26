@@ -60,7 +60,7 @@ func GetUserTagihan(telepon string, db *mongo.Database, col string) (data []mode
 	}
 	return
 }
-func GetTagihan(surat string, db *mongo.Database, col string) (data []model.Tagihan) {
+func GetTagihan(tagihan string, db *mongo.Database, col string) (data []model.Tagihan) {
 	user := db.Collection(col)
 	filter := bson.M{"status": tagihan}
 	cursor, err := user.Find(context.TODO(), filter)
