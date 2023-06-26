@@ -13,7 +13,7 @@ type UserTagihan struct {
 type Tagihan struct {
 	ID       primitive.ObjectID `bson:"_id,omitempty" json:"id,omitempty"`
 	Isitagihan string             `bson:"isitagihan" json:"isitagihan"`
-	subject  string             `bson:"subject" json:"subject"`
+	status  string             `bson:"status" json:"status"`
 }
 
 type DataTagihan struct {
