@@ -3,12 +3,14 @@ package module
 import (
 	"context"
 	"fmt"
-	"github.com/gocroot/kampus/model"
+
+	"github.com/Fahadabdul17/kampus/model"
+	_ "github.com/gocroot/kampus/model"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-func DataAkreditas(Perguruan_Tinggi string, Program_studi string,  Peringkat string,  Status string, db *mongo.Database, col string) (InsertedID interface{}) {
+func DataAkreditas(Perguruan_Tinggi string, Program_studi string, Peringkat string, Status string, db *mongo.Database, col string) (InsertedID interface{}) {
 	DataLam := new(model.DataAkreditas)
 	DataLam.Perguruan_Tinggi = Perguruan_Tinggi
 	DataLam.Program_studi = Program_studi
@@ -23,7 +25,7 @@ func DataProgramStudi(Program_studi string, program string, db *mongo.Database, 
 }
 func Profile(Isi_satu string, db *mongo.Database, col string) (InsertedID interface{}) {
 	DataLam := new(model.Profile)
-	DataLam.Isi_satu= Isi_satu
+	DataLam.Isi_satu = Isi_satu
 	return InsertOneDoc(db, col, DataLam)
 }
 func GetDataPeringkat(peringkat string, db *mongo.Database, col string) (data []model.DataAkreditas) {

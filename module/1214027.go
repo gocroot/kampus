@@ -41,7 +41,7 @@ func InsertKelas(db *mongo.Database, ruang string, kapasitasmhs string) (Inserte
 	var kelas Kelasbel
 	kelas.Ruang = ruang
 	kelas.KapasitasMhs = kapasitasmhs
-	
+
 	return InsertOneDoc(db, "kelas", kelas)
 }
 
