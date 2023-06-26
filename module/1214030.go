@@ -4,8 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/Fahadabdul17/kampus/model"
-	_ "github.com/gocroot/kampus/model"
+	"github.com/gocroot/kampus/model"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
@@ -41,9 +40,9 @@ func GetDataPeringkat(peringkat string, db *mongo.Database, col string) (data []
 	}
 	return
 }
-func GetDataStatus(peringkat string, db *mongo.Database, col string) (data []model.DataAkreditas) {
+func GetDataStatus(status string, db *mongo.Database, col string) (data []model.DataAkreditas) {
 	user := db.Collection(col)
-	filter := bson.M{"peringkat": peringkat}
+	filter := bson.M{"status": status}
 	cursor, err := user.Find(context.TODO(), filter)
 	if err != nil {
 		fmt.Println("GetDataAkreditas :", err)
