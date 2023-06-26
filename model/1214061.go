@@ -1,8 +1,20 @@
-package nizar
+package model
 
 import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
+
+type UserTagihan struct {
+	ID      primitive.ObjectID `bson:"_id,omitempty" json:"id,omitempty"`
+	Nama    string             `bson:"nama" json:"nama"`
+	Email   string             `bson:"email" json:"email"`
+	Telepon string             `bson:"telepon" json:"telepon"`
+}
+type Tagihan struct {
+	ID       primitive.ObjectID `bson:"_id,omitempty" json:"id,omitempty"`
+	Isitagihan string             `bson:"isitagihan" json:"isitagihan"`
+	subject  string             `bson:"subject" json:"subject"`
+}
 
 type DataTagihan struct {
 	ID       primitive.ObjectID `bson:"_id,omitempty" json:"id,omitempty"`
