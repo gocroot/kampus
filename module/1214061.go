@@ -16,10 +16,10 @@ func InsertUserTagihan(Nama string, Email string, Telepon string, db *mongo.Data
 	srt.Telepon = Telepon
 	return InsertOneDoc(db, col, srt)
 }
-func InsertTagihan(Isisurat string, Subject string, db *mongo.Database, col string) (InsertedID interface{}) {
+func InsertTagihan(Isisurat string, status string, db *mongo.Database, col string) (InsertedID interface{}) {
 	srt := new(model.Tagihan)
 	srt.Isitagihan = isitagihan
-	srt.Subject = Subject
+	srt.status = status
 	return InsertOneDoc(db, col, srt)
 }
 
